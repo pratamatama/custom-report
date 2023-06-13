@@ -53,15 +53,15 @@
         <thead>
             <tr style="vertical-align: middle">
                 <th rowspan="2" class="table-header">No.</th>
-                <th rowspan="2" class="table-header">Tgl. MRS</th>
+                <th rowspan="2" align="center" class="table-header">Tgl. MRS</th>
                 <th rowspan="2" class="table-header">Nama Pasien</th>
                 <th colspan="2" class="table-header">Umur</th>
-                <th rowspan="2" class="table-header">No. RM</th>
+                <th rowspan="2" align="center" class="table-header">No. RM</th>
                 <th colspan="3" class="table-header">Cara Datang</th>
                 <th rowspan="2" class="table-header">Alamat</th>
                 <th rowspan="2" class="table-header">Diagnosa MRS</th>
                 <th rowspan="2" class="table-header">Diagnosa KRS</th>
-                <th rowspan="2" class="table-header">Tgl. KRS</th>
+                <th rowspan="2" align="center" class="table-header">Tgl. KRS</th>
                 <th rowspan="2" align="center" class="table-header">HP</th>
                 <th rowspan="2" align="center" class="table-header">KRS</th>
                 <th rowspan="2" align="center" class="table-header">APS</th>

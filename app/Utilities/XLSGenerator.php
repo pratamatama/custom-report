@@ -4,6 +4,9 @@ namespace App\Utilities;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class XLSGenerator extends DOMParser
 {
@@ -25,13 +28,30 @@ class XLSGenerator extends DOMParser
             $columnLetter = $mainCell[0];
             $worksheet->setCellValue($mainCell, $content)->mergeCells($position);
             $worksheet->getColumnDimension($columnLetter)->setAutoSize(true);
-            $worksheet->getStyle($position)->getFont()->setBold(true);
-            $worksheet->getStyle($position)->getAlignment()->setHorizontal('center')->setVertical('center');
+            $worksheet->getStyle($position)
+                ->getFont()
+                ->setBold(true);
+            $worksheet->getStyle($position)
+                ->getAlignment()
+                ->setHorizontal('center')
+                ->setVertical('center');
+            $worksheet->getStyle($position)
+                ->getBorders()
+                ->getOutline()
+                ->setBorderStyle(Border::BORDER_THIN)
+                ->setColor(new Color('000000'));
+            $worksheet->getStyle($position)
+                ->getFill()
+                ->setFillType(Fill::FILL_SOLID)
+                ->setStartColor(new Color('eaeaea'));
             if (!empty($align)) {
                 $columnStart = $mainCell;
                 $columnEnd = $mainCell[0] . $this->modifiedData->count() + $this->headerRowsCount;
                 $verticalRange = $columnStart . ':' . $columnEnd;
-                $worksheet->getStyle($verticalRange)->getAlignment()->setHorizontal($align)->setVertical('center');
+                $worksheet->getStyle($verticalRange)
+                    ->getAlignment()
+                    ->setHorizontal($align)
+                    ->setVertical('center');
             }
         }
 
@@ -44,7 +64,15 @@ class XLSGenerator extends DOMParser
             if ($this->isAutoIncrement) {
                 $cell = $letter . $row;
                 $worksheet->setCellValue($cell, $i);
-                $worksheet->getStyle($cell)->getAlignment()->setHorizontal('center')->setVertical('center');
+                $worksheet->getStyle($cell)
+                    ->getAlignment()
+                    ->setHorizontal('center')
+                    ->setVertical('center');
+                $worksheet->getStyle($cell)
+                    ->getBorders()
+                    ->getOutline()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('000000'));
                 $letter = 'B';
             }
 
@@ -52,12 +80,22 @@ class XLSGenerator extends DOMParser
                 foreach ($data as $value) {
                     $cell = $letter++ . $row;
                     $worksheet->setCellValue($cell, $value);
+                    $worksheet->getStyle($cell)
+                        ->getBorders()
+                        ->getOutline()
+                        ->setBorderStyle(Border::BORDER_THIN)
+                        ->setColor(new Color('000000'));
                 }
             } else {
                 foreach ($this->renderKeys as $key) {
                     $d = $data->toArray();
                     $cell = $letter++ . $row;
                     $worksheet->setCellValue($cell, $d[$key]);
+                    $worksheet->getStyle($cell)
+                        ->getBorders()
+                        ->getOutline()
+                        ->setBorderStyle(Border::BORDER_THIN)
+                        ->setColor(new Color('000000'));
                 }
             }
         }
