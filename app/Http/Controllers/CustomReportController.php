@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\CaraDatang;
 use App\Enums\Gender;
 use App\Models\SensusRawatInap;
-use App\Utilities\Generator;
+use Pratamatama\PhpGenerator\Generator;
 
 class CustomReportController extends Controller
 {
@@ -14,23 +14,23 @@ class CustomReportController extends Controller
         $data = SensusRawatInap::all();
 
         $modifier = function ($item) {
-            $gender = $item['gender'];
-            $age = (int) $item['age'];
-            $caraDatang = (int) $item['cara_datang'];
+            $gender = $item->gender;
+            $age = (int) $item->age;
+            $caraDatang = (int) $item->cara_datang;
 
             return [
-                ...$item,
+                ...$item->toArray(),
                 'l' => $gender == Gender::male->value ? $age . 'th' : '',
                 'p' => $gender == Gender::female->value ? $age . 'th' : '',
                 'poli' => $caraDatang == CaraDatang::poli->value ? 'v' : '',
                 'igd' => $caraDatang == CaraDatang::igd->value ? 'v' : '',
                 'pndhn.' => $caraDatang == CaraDatang::pindahan->value ? 'v' : '',
-                'hp' => (bool) $item['hp'] ? 'v' : '',
-                'krs' => (bool) $item['krs'] ? 'v' : '',
-                'aps' => (bool) $item['aps'] ? 'v' : '',
-                'm' => (bool) $item['m'] ? 'v' : '',
-                'rjk' => (bool) $item['rjk'] ? 'v' : '',
-                'pdh' => (bool) $item['pdh'] ? 'v' : '',
+                'hp' => (bool) $item->hp ? 'v' : '',
+                'krs' => (bool) $item->krs ? 'v' : '',
+                'aps' => (bool) $item->aps ? 'v' : '',
+                'm' => (bool) $item->m ? 'v' : '',
+                'rjk' => (bool) $item->rjk ? 'v' : '',
+                'pdh' => (bool) $item->pdh ? 'v' : '',
             ];
         };
 
