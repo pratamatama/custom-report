@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomReportController;
 use App\Utilities\Generator;
 use Illuminate\Support\Facades\Route;
 
@@ -14,34 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/sample', function () {
-    return view('sample');
-});
-
-Route::get('/', function () {
-    $data = DB::raw('');
-
-    return Generator::xlsx()
-        ->fromBlade('sample')
-        ->setData($data)
-        ->render([
-            'tgl_mrs',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-            'nama_pasien',
-        ])
-        ->generate();
-});
+Route::get('/', [CustomReportController::class, 'generate']);
+Route::get('/sample', [CustomReportController::class, 'sample']);
