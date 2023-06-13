@@ -2,34 +2,11 @@
 
 namespace App\Utilities;
 
-use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class XLSGenerator extends DOMParser
 {
-    protected function computeData()
-    {
-        if (!$this->data || $this->data->count() === 0) {
-            return collect([]);
-        }
-
-        if (count($this->renderKeys) === 0) {
-            return $this->data;
-        }
-
-        if ($this->data->count() === 1) {
-            return $this->data
-                ->only($this->renderKeys);
-        }
-
-        return $this->data->map(function ($data) {
-            return collect($data)
-                ->only($this->renderKeys)
-                ->all();
-        });
-    }
-
     protected function adjustPosition($startCell, $endCell)
     {
         return "$startCell:$endCell";
@@ -43,26 +20,45 @@ class XLSGenerator extends DOMParser
         foreach ($this->headers as $header) {
             $position = $header['position'];
             $content = $header['content'];
+            $align = $header['align'];
             [$mainCell] = explode(':', $position);
             $columnLetter = $mainCell[0];
             $worksheet->setCellValue($mainCell, $content)->mergeCells($position);
             $worksheet->getColumnDimension($columnLetter)->setAutoSize(true);
+            $worksheet->getStyle($position)->getFont()->setBold(true);
+            $worksheet->getStyle($position)->getAlignment()->setHorizontal('center')->setVertical('center');
+            if (!empty($align)) {
+                $columnStart = $mainCell;
+                $columnEnd = $mainCell[0] . $this->modifiedData->count() + $this->headerRowsCount;
+                $verticalRange = $columnStart . ':' . $columnEnd;
+                $worksheet->getStyle($verticalRange)->getAlignment()->setHorizontal($align)->setVertical('center');
+            }
         }
 
-        for ($i = 1; $i <= $this->computeData()->count(); $i++) {
+        for ($i = 1; $i <= $this->modifiedData->count(); $i++) {
             $index = $i - 1;
-            $data = $this->computeData()[$index];
+            $data = $this->modifiedData[$index];
             $row = $i + $this->headerRowsCount;
 
             $letter = 'A';
             if ($this->isAutoIncrement) {
-                $worksheet->setCellValue($letter . $row, $i);
+                $cell = $letter . $row;
+                $worksheet->setCellValue($cell, $i);
+                $worksheet->getStyle($cell)->getAlignment()->setHorizontal('center')->setVertical('center');
                 $letter = 'B';
             }
 
-            foreach ($data as $value) {
-                $cell = $letter++ . $row;
-                $worksheet->setCellValue($cell, $value);
+            if (empty($this->renderKeys)) {
+                foreach ($data as $value) {
+                    $cell = $letter++ . $row;
+                    $worksheet->setCellValue($cell, $value);
+                }
+            } else {
+                foreach ($this->renderKeys as $key) {
+                    $d = $data->toArray();
+                    $cell = $letter++ . $row;
+                    $worksheet->setCellValue($cell, $d[$key]);
+                }
             }
         }
 

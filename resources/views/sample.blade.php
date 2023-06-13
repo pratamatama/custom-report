@@ -44,7 +44,7 @@
 
 <body>
     <div>
-        <h1 style="text-align: center; font-weight: bold; margin-bottom: 1rem">
+        <h1 id="title" style="text-align: center; font-weight: bold; margin-bottom: 1rem">
             SENSUS HARIAN RAWAT INAP
         </h1>
     </div>
@@ -62,21 +62,21 @@
                 <th rowspan="2" class="table-header">Diagnosa MRS</th>
                 <th rowspan="2" class="table-header">Diagnosa KRS</th>
                 <th rowspan="2" class="table-header">Tgl. KRS</th>
-                <th rowspan="2" class="table-header">HP</th>
-                <th rowspan="2" class="table-header">KRS</th>
-                <th rowspan="2" class="table-header">APS</th>
-                <th rowspan="2" class="table-header">M</th>
-                <th rowspan="2" class="table-header">Rjk</th>
-                <th rowspan="2" class="table-header">Pdh</th>
+                <th rowspan="2" align="center" class="table-header">HP</th>
+                <th rowspan="2" align="center" class="table-header">KRS</th>
+                <th rowspan="2" align="center" class="table-header">APS</th>
+                <th rowspan="2" align="center" class="table-header">M</th>
+                <th rowspan="2" align="center" class="table-header">Rjk</th>
+                <th rowspan="2" align="center" class="table-header">Pdh</th>
                 <th rowspan="2" class="table-header">Cara Bayar</th>
                 <th rowspan="2" class="table-header">DPJP</th>
             </tr>
             <tr>
-                <th ref="Umur" class="table-header">L</th>
-                <th ref="Umur" class="table-header">P</th>
-                <th ref="Cara Datang" class="table-header">IGD</th>
-                <th ref="Cara Datang" class="table-header">Poli</th>
-                <th ref="Cara Datang" class="table-header">Pndhn.</th>
+                <th ref="Umur" align="center" class="table-header">L</th>
+                <th ref="Umur" align="center" class="table-header">P</th>
+                <th ref="Cara Datang" align="center" class="table-header">IGD</th>
+                <th ref="Cara Datang" align="center" class="table-header">Poli</th>
+                <th ref="Cara Datang" align="center" class="table-header">Pndhn.</th>
             </tr>
         </thead>
     </table>

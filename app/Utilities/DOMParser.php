@@ -7,6 +7,8 @@ use DOMNode;
 
 class DOMParser extends PreProcessor
 {
+    protected string $title = 'XLS Report Sample';
+
     protected int $headerRowsCount = 1;
 
     protected array $headers = [];
@@ -20,7 +22,10 @@ class DOMParser extends PreProcessor
         $html = view($fileName)->render();
         $this->dom = new DOMDocument();
         $this->dom->loadHTML($html);
-        $this->rename($fileName);
+
+        $title = $this->dom->getElementById('title')->textContent;
+        $this->setTitle($title);
+        $this->rename($this->title);
         return $this;
     }
 
@@ -34,6 +39,7 @@ class DOMParser extends PreProcessor
     {
         return [
             'ref' => $node->getAttribute('ref'),
+            'align' => $node->getAttribute('align'),
             'colspan' => (int) $node->getAttribute('colspan'),
             'rowspan' => (int) $node->getAttribute('rowspan'),
             'content' => $node->textContent,
@@ -64,6 +70,14 @@ class DOMParser extends PreProcessor
         return dd($this);
     }
 
+    public function setTitle(string $title)
+    {
+        if (!empty($title)) {
+            $this->title = trim($title);
+        }
+        return $this;
+    }
+
     public function fromBlade(string $fileName)
     {
         $this->loadDOM($fileName);
@@ -86,10 +100,7 @@ class DOMParser extends PreProcessor
 
                 $header = [
                     'position' => $position,
-                    'colspan' => $attrs['colspan'],
-                    'rowspan' => $attrs['rowspan'],
-                    'content' => $attrs['content'],
-                    'ref' => $attrs['ref'],
+                    ...$attrs,
                 ];
 
                 $hp = $header['position'];
